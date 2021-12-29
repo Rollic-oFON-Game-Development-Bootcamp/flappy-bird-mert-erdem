@@ -12,6 +12,8 @@ public class GateManager : MonoBehaviour
     private float upperBound, lowerBound;
     private float spawnPointX = 5f;
 
+    private void Awake() => GameManager.ActionGameOver += Stop;
+
     private void Start()
     {
         upperBound = spawnBoundUpper.position.y;
@@ -26,4 +28,9 @@ public class GateManager : MonoBehaviour
         var spawnPoint = new Vector2(spawnPointX, spawnPointY);
         Instantiate(gate, spawnPoint, Quaternion.identity);
     }
+
+    //action game over's method
+    private void Stop() => Destroy(gameObject);
+
+    private void OnDestroy() => GameManager.ActionGameOver -= Stop;
 }
