@@ -11,10 +11,23 @@ public class PlayerController : MonoBehaviour
             Fly();
     }
 
+    private void FixedUpdate() => Rotate();
+
     private void Fly()
     {
         rigidBody.velocity = Vector2.zero;
         rigidBody.AddForce(Vector2.up * flyForce, ForceMode2D.Impulse);
+    }
+
+    private void Rotate()
+    {
+        float rotationZ = Mathf.Clamp(rigidBody.velocity.y * 25f, -50f, 30f);
+        transform.rotation = Quaternion.Euler(0f, 0f, rotationZ);
+    }
+
+    private void Die()
+    {
+        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -27,10 +40,5 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground"))
             Die();
-    }
-
-    private void Die()
-    {
-        
     }
 }
