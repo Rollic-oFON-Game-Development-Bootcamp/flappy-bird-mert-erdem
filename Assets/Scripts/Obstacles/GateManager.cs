@@ -12,14 +12,16 @@ public class GateManager : MonoBehaviour
     private float upperBound, lowerBound;
     private float spawnPointX = 5f;
 
-    private void Awake() => GameManager.ActionGameOver += Stop;
+    private void Awake()
+    {
+        GameManager.ActionGameOver += Stop;
+        GameManager.ActionGameStart += StartSpawning;
+    }
 
     private void Start()
     {
         upperBound = spawnBoundUpper.position.y;
         lowerBound = spawnBoundLower.position.y;
-
-        InvokeRepeating("SpawnGate", spawnStartTime, spawnIntervalTime);
     }
 
     private void SpawnGate()
@@ -29,8 +31,21 @@ public class GateManager : MonoBehaviour
         Instantiate(gate, spawnPoint, Quaternion.identity);
     }
 
-    //action game over's method
-    private void Stop() => Destroy(gameObject);
+    //action game start's method
+    private void StartSpawning()
+    {
+        InvokeRepeating("SpawnGate", spawnStartTime, spawnIntervalTime);
+    }
 
-    private void OnDestroy() => GameManager.ActionGameOver -= Stop;
+    //action game over's method
+    private void Stop()
+    {
+        CancelInvoke("SpawnGate");
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.ActionGameOver -= Stop;
+        GameManager.ActionGameStart -= StartSpawning;
+    }
 }

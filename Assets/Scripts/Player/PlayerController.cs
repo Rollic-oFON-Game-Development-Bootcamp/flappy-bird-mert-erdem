@@ -8,7 +8,11 @@ public class PlayerController : MonoBehaviour
     //specs
     [SerializeField] [Range(0.1f, 10f)] private float flyForce = 5f;
 
-    private void Awake() => GameManager.ActionGameOver += Die;
+    private void Awake()
+    {
+        GameManager.ActionGameOver += Die;
+        GameManager.ActionGameStart += StartFlying;
+    }
 
     void Update()
     {
@@ -38,6 +42,13 @@ public class PlayerController : MonoBehaviour
         Destroy(this);
     }
 
+    //action game start's method
+    private void StartFlying()
+    {
+        rigidBody.isKinematic = false;
+        Fly();
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Obstacle"))
@@ -50,5 +61,9 @@ public class PlayerController : MonoBehaviour
             GameManager.ActionGameOver?.Invoke();
     }
 
-    private void OnDestroy() => GameManager.ActionGameOver -= Die;
+    private void OnDestroy()
+    {
+        GameManager.ActionGameOver -= Die;
+        GameManager.ActionGameStart -= StartFlying;
+    }
 }
