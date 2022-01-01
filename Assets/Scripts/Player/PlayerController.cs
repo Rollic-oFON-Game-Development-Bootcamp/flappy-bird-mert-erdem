@@ -8,10 +8,10 @@ public class PlayerController : MonoBehaviour
     //specs
     [SerializeField] [Range(0.1f, 10f)] private float flyForce = 5f;
 
-    private void Awake()
+    private void Start()
     {
-        GameManager.ActionGameOver += Die;
-        GameManager.ActionGameStart += StartFlying;
+        GameManager.Instance.ActionGameOver += Die;
+        GameManager.Instance.ActionGameStart += StartFlying;
     }
 
     void Update()
@@ -52,18 +52,21 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Obstacle"))
-            GameManager.ActionGameOver?.Invoke();
+            GameManager.Instance.ActionGameOver?.Invoke();
+
+        if (collision.CompareTag("Score"))
+            GameManager.Instance.AddScore();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
-            GameManager.ActionGameOver?.Invoke();
+            GameManager.Instance.ActionGameOver?.Invoke();
     }
 
     private void OnDestroy()
     {
-        GameManager.ActionGameOver -= Die;
-        GameManager.ActionGameStart -= StartFlying;
+        GameManager.Instance.ActionGameOver -= Die;
+        GameManager.Instance.ActionGameStart -= StartFlying;
     }
 }

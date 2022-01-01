@@ -12,14 +12,11 @@ public class GateManager : MonoBehaviour
     private float upperBound, lowerBound;
     private float spawnPointX = 5f;
 
-    private void Awake()
-    {
-        GameManager.ActionGameOver += Stop;
-        GameManager.ActionGameStart += StartSpawning;
-    }
-
     private void Start()
     {
+        GameManager.Instance.ActionGameOver += Stop;
+        GameManager.Instance.ActionGameStart += StartSpawning;
+
         upperBound = spawnBoundUpper.position.y;
         lowerBound = spawnBoundLower.position.y;
     }
@@ -38,14 +35,11 @@ public class GateManager : MonoBehaviour
     }
 
     //action game over's method
-    private void Stop()
-    {
-        CancelInvoke("SpawnGate");
-    }
+    private void Stop() => CancelInvoke("SpawnGate");
 
     private void OnDestroy()
     {
-        GameManager.ActionGameOver -= Stop;
-        GameManager.ActionGameStart -= StartSpawning;
+        GameManager.Instance.ActionGameOver -= Stop;
+        GameManager.Instance.ActionGameStart -= StartSpawning;
     }
 }

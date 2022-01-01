@@ -9,6 +9,7 @@ TagManager:
   - Gate
   - Ground
   - GroundDeadline
+  - Score
   layers:
   - Default
   - TransparentFX
